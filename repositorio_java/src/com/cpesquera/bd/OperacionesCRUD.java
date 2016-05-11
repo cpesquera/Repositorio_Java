@@ -72,11 +72,11 @@ public class OperacionesCRUD {
             filasInsertadas = preparedStatement.executeUpdate();
 
             if (filasInsertadas != 1) {	
-                throw new FalloGeneral("FalloGeneral al crear el " + objeto.toString());
+                throw new FalloGeneral("FalloGeneral al crear el objeto: " + objeto.toString());
             }
 
         } catch (SQLException e) {
-            throw new FalloGeneral("FalloGeneral al crear el " + objeto.toString(), e);
+            throw new FalloGeneral("FalloGeneral al crear el objeto: " + objeto.toString(), e);
         } finally {
             OperacionesGenerales.cerrar(preparedStatement);
             OperacionesGenerales.cerrar(conexion);
@@ -147,10 +147,10 @@ public class OperacionesCRUD {
             filasActualizadas = preparedStatement.executeUpdate();
 
             if (filasActualizadas != 1)
-            	throw new InstanciaNoEncontrada("InstanciaNoEncontrada al modificar el paciente: " + objeto.toString());
+            	throw new InstanciaNoEncontrada("InstanciaNoEncontrada al modificar el objeto: " + objeto.toString());
 
         } catch (SQLException e) {
-            throw new FalloGeneral("FalloGeneral al modificar el paciente " + objeto.toString(), e);
+            throw new FalloGeneral("FalloGeneral al modificar el objeto: " + objeto.toString(), e);
         } finally {
             OperacionesGenerales.cerrar(preparedStatement);
             OperacionesGenerales.cerrar(conexion);
@@ -160,13 +160,13 @@ public class OperacionesCRUD {
     }
 
     /**
-     * Borra un paciente.
-     * @param id identificador del paciente.
+     * Borra un objeto.
+     * @param id identificador del objeto.
      * @throws FalloGeneralException si se produce un error grave.
-     * @throws InstanciaNoEncontradaException si no se encuentra el paciente
+     * @throws InstanciaNoEncontradaException si no se encuentra el objeto
      *         que hay que borrar.
      */
-    public void eliminar(Paciente paciente) throws FalloGeneral, InstanciaNoEncontrada {
+    public void eliminar(Objeto objeto) throws FalloGeneral, InstanciaNoEncontrada {
     	//Connection conexion = FactoriaConexiones.conexion("MYSQL", "localhost", "3306", "health4you", "root", "");
 		Connection conexion = FactoriaConexiones.conexion(ConstantesDB.kTIPODB, ConstantesDB.kSERVIDOR, 
 				ConstantesDB.kPUERTO, ConstantesDB.kDB, ConstantesDB.kUSUARIO, ConstantesDB.kPASSWORD);
@@ -180,7 +180,7 @@ public class OperacionesCRUD {
         consulta.append("id = ?");
         consulta.append(" and ");
         consulta.append("idEmpresa = ?");
-        
+
         try {
         	preparedStatement = conexion.prepareStatement(consulta.toString());
         	
@@ -190,16 +190,16 @@ public class OperacionesCRUD {
             filasBorradas = preparedStatement.executeUpdate();
 
             if (filasBorradas == 0)
-                throw new InstanciaNoEncontrada("InstanciaNoEncontrada al borrar el paciente: " + objeto.toString());
+                throw new InstanciaNoEncontrada("InstanciaNoEncontrada al eliminar el objeto: " + objeto.toString());
 
             if (filasBorradas != 1)
-                throw new InstanciaNoEncontrada("InstanciaNoEncontrada al borrar el paciente: " + objeto.toString());
+                throw new InstanciaNoEncontrada("InstanciaNoEncontrada al eliminar el objeto: " + objeto.toString());
         }
         catch (SQLException e) {
-            throw new FalloGeneral("FalloGeneral al borrar el paciente: " + paciente.toString(), e); 
+            throw new FalloGeneral("FalloGeneral al borrar el objeto: " + objeto.toString(), e); 
         } finally {
             OperacionesGenerales.cerrar(preparedStatement);
             OperacionesGenerales.cerrar(conexion);
         }
-    }	
+    }
 }
