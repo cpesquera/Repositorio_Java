@@ -20,10 +20,10 @@ public final class FactoriaConexiones {
     }
 
     /**
-     * Devuelve la conexión de tipo <code>Connection</code> de la base de datos si no es    
+     * Devuelve la conexion de tipo <code>Connection</code> de la base de datos si no es    
      * <code>null</code>.
      *   
-     * @param tipoBaseDatos el objeto <code>String</code> con el tipo de la base de datos (MYSQL, SQLSERVER, FIREBIRD, ODBC).
+     * @param tipoBaseDatos el objeto <code>String</code> con el tipo de la base de datos (MYSQL, SQLSERVER, FIREBIRD, ODBC, SQLITE).
      * @param direccionServidor el objeto <code>String</code> con la dirección del servidor.
      * @param puerto el objeto <code>String</code> con el puerto de conexión de la base de datos.
      * @param nombreBaseDatos el objeto <code>String</code> con el nombre de la base de datos.
@@ -72,20 +72,20 @@ public final class FactoriaConexiones {
             Class.forName(nombreDriver);
 
             if (tipoBaseDatos == "SQLITE") {
-	            //Establecemos la conexión mediante la clase DriverManager.
+	            //Establecemos la conexion mediante la clase DriverManager.
 	            conexion = DriverManager.getConnection(
 	                baseDatosURL, usuario, password);
             } else {
-            	//Establecemos la conexión mediante la clase DriverManager.
+            	//Establecemos la conexion mediante la clase DriverManager.
 	            conexion = DriverManager.getConnection(
 	                baseDatosURL);
             }     
         }
-        //SQLException es lanzada por la mayoria de métodos de JDBC.
+        //SQLException es lanzada por la mayoria de metodos de JDBC.
         catch (SQLException e) {
             System.err.println("Error SQLException! " + e);
         }
-        //Excepcion lanzada por el método forName
+        //Excepcion lanzada por el metodo forName
         catch (ClassNotFoundException e) {
             System.err.println("Driver no encontrado en el classpath! " + e);
         }

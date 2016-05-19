@@ -21,7 +21,7 @@ import java.sql.SQLException;
 //import com.cpesquera.health4you.persistence.FalloGeneralException;
 //import com.cpesquera.health4you.persistence.InstanciaNoEncontradaException;
 
-public class OperacionesCRUD {
+public class OperacionesSQL {
 
     /**
      * Crea un objeto con un nuevo identificador.
@@ -55,7 +55,7 @@ public class OperacionesCRUD {
 
         try {
         	preparedStatement = conexion.prepareStatement(consulta.toString());
-            
+
             preparedStatement.setString(1, objeto.getCampo1());
             preparedStatement.setString(2, objeto.getCampo2());                            
             preparedStatement.setString(3, objeto.getCampo3());
