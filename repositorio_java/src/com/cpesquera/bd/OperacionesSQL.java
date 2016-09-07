@@ -11,16 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-//import com.cpesquera.health4you.db.ConstantesDB;
-//import com.cpesquera.health4you.db.FactoriaConexiones;
-//import com.cpesquera.health4you.db.NombreTablas;
-//import com.cpesquera.health4you.db.OperacionesGenerales;
-//import com.cpesquera.health4you.domain.Paciente;
-//import com.cpesquera.health4you.exception.FalloGeneral;
-//import com.cpesquera.health4you.exception.InstanciaNoEncontrada;
-//import com.cpesquera.health4you.persistence.FalloGeneralException;
-//import com.cpesquera.health4you.persistence.InstanciaNoEncontradaException;
-
 public class OperacionesSQL {
 
     /**
@@ -28,15 +18,17 @@ public class OperacionesSQL {
      * 
      * @param conexion la conexion con la base de datos.
      * @param plantilla el paciente que vamos a crear.
+     * @throws Exception 
      * @throws FalloGeneral si se produce un error grave.
      */
-	public void crear(Objeto objeto) {
+	public int crear(StringBuffer consulta, PreparedStatement preparedStatement, int tipoActualizacion) throws Exception {
 		Connection conexion = FactoriaConexiones.conexion("tipoBaseDatos", "direccionServidor", "puerto", "nombreBaseDatos", "usuario", "password");
 		//Ejemplo: Connection conexion = FactoriaConexiones.conexion("MYSQL", "localhost", "3306", "health4you", "root", "");
-		PreparedStatement preparedStatement = null;
+		preparedStatement = null;
     	int filasInsertadas = 0;
 
-    	StringBuffer consulta = new StringBuffer("INSERT INTO");
+/*
+    	consulta = new StringBuffer("INSERT INTO");
         consulta.append(" Tabla ");
         consulta.append("(campo1, ");
         consulta.append("campo2, ");
@@ -52,10 +44,12 @@ public class OperacionesSQL {
         consulta.append("campo12)");
         consulta.append(" VALUES ");
         consulta.append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+*/        
 
         try {
         	preparedStatement = conexion.prepareStatement(consulta.toString());
 
+        	/*
             preparedStatement.setString(1, objeto.getCampo1());
             preparedStatement.setString(2, objeto.getCampo2());                            
             preparedStatement.setString(3, objeto.getCampo3());
@@ -68,15 +62,15 @@ public class OperacionesSQL {
             preparedStatement.setString(10, objeto.getCampo10());
             preparedStatement.setString(11, objeto.getCampo11());
             preparedStatement.setString(12, objeto.getCampo12());
+            */
 
             filasInsertadas = preparedStatement.executeUpdate();
 
-            if (filasInsertadas != 1) {	
-                throw new FalloGeneral("FalloGeneral al crear el objeto: " + objeto.toString());
-            }
+            if (filasInsertadas != 1)
+                throw new Exception("FalloGeneral al crear el objeto.");
 
         } catch (SQLException e) {
-            throw new FalloGeneral("FalloGeneral al crear el objeto: " + objeto.toString(), e);
+            throw new Exception("FalloGeneral al crear el objeto. ", e);
         } finally {
             OperacionesGenerales.cerrar(preparedStatement);
             OperacionesGenerales.cerrar(conexion);
@@ -98,13 +92,14 @@ public class OperacionesSQL {
      * @throws InstanciaNoEncontrada si no se encuentra el objeto
      *         que hay que actualizar.
      */
-    public int actualizar(Objeto objeto) throws FalloGeneral, InstanciaNoEncontrada {
+    public int actualizar(StringBuffer consulta) {
     	//Connection conexion = FactoriaConexiones.conexion("MYSQL", "localhost", "3306", "health4you", "root", "");
 		Connection conexion = FactoriaConexiones.conexion(ConstantesDB.kTIPODB, ConstantesDB.kSERVIDOR, 
 				ConstantesDB.kPUERTO, ConstantesDB.kDB, ConstantesDB.kUSUARIO, ConstantesDB.kPASSWORD);
         PreparedStatement preparedStatement = null;
     	int filasActualizadas = 0;
 
+    	/*
         StringBuffer consulta = new StringBuffer("UPDATE ");
         consulta.append(NombreTablas.kPACIENTES);
 
@@ -125,10 +120,12 @@ public class OperacionesSQL {
         consulta.append("campo12 = ?");
         consulta.append(" and ");
         consulta.append("campo13 = ?");
-        
+        */
+
         try {
         	preparedStatement = conexion.prepareStatement(consulta.toString());
 
+        	/*
             preparedStatement.setString(1, objeto.getCampo1());
             preparedStatement.setString(2, objeto.getCampo2());                            
             preparedStatement.setString(3, objeto.getCampo3());
@@ -143,14 +140,15 @@ public class OperacionesSQL {
 
             preparedStatement.setInt(12, objeto.getCampo12());
             preparedStatement.setString(13, objeto.getCampo13());
+            */
 
             filasActualizadas = preparedStatement.executeUpdate();
 
             if (filasActualizadas != 1)
-            	throw new InstanciaNoEncontrada("InstanciaNoEncontrada al modificar el objeto: " + objeto.toString());
+            	throw new Exception("InstanciaNoEncontrada al modificar el objeto: " + objeto.toString());
 
         } catch (SQLException e) {
-            throw new FalloGeneral("FalloGeneral al modificar el objeto: " + objeto.toString(), e);
+            throw new Exception("FalloGeneral al modificar el objeto: " + objeto.toString(), e);
         } finally {
             OperacionesGenerales.cerrar(preparedStatement);
             OperacionesGenerales.cerrar(conexion);
@@ -166,13 +164,14 @@ public class OperacionesSQL {
      * @throws InstanciaNoEncontradaException si no se encuentra el objeto
      *         que hay que borrar.
      */
-    public void eliminar(Objeto objeto) throws FalloGeneral, InstanciaNoEncontrada {
+    public void eliminar(StringBuffer consulta) throws Exception {
     	//Connection conexion = FactoriaConexiones.conexion("MYSQL", "localhost", "3306", "health4you", "root", "");
 		Connection conexion = FactoriaConexiones.conexion(ConstantesDB.kTIPODB, ConstantesDB.kSERVIDOR, 
 				ConstantesDB.kPUERTO, ConstantesDB.kDB, ConstantesDB.kUSUARIO, ConstantesDB.kPASSWORD);
         PreparedStatement preparedStatement = null;
         int filasBorradas = 0;
 
+        /*
         StringBuffer consulta = new StringBuffer("DELETE FROM ");
         consulta.append(NombreTablas.kPACIENTES);
 
@@ -180,23 +179,26 @@ public class OperacionesSQL {
         consulta.append("id = ?");
         consulta.append(" and ");
         consulta.append("idEmpresa = ?");
+        */
 
         try {
         	preparedStatement = conexion.prepareStatement(consulta.toString());
-        	
+
+        	/*
             preparedStatement.setInt(1, paciente.getId());
             preparedStatement.setString(2, paciente.getIdEmpresa());
+            */
 
             filasBorradas = preparedStatement.executeUpdate();
 
             if (filasBorradas == 0)
-                throw new InstanciaNoEncontrada("InstanciaNoEncontrada al eliminar el objeto: " + objeto.toString());
+                throw new Exception("InstanciaNoEncontrada al eliminar el objeto: " + objeto.toString());
 
             if (filasBorradas != 1)
-                throw new InstanciaNoEncontrada("InstanciaNoEncontrada al eliminar el objeto: " + objeto.toString());
+                throw new Exception("InstanciaNoEncontrada al eliminar el objeto: " + objeto.toString());
         }
         catch (SQLException e) {
-            throw new FalloGeneral("FalloGeneral al borrar el objeto: " + objeto.toString(), e); 
+            throw new Exception("FalloGeneral al borrar el objeto: " + objeto.toString(), e); 
         } finally {
             OperacionesGenerales.cerrar(preparedStatement);
             OperacionesGenerales.cerrar(conexion);
