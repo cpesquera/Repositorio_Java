@@ -45,7 +45,21 @@ public class OperacionesSQL {
         return filasActualizadas;
 	}
 
-	public void leerBD() {
-		
+	public void leerBD(StringBuffer consulta) throws Exception {
+		Connection conexion = FactoriaConexiones.conexion("tipoBaseDatos", "direccionServidor", "puerto", "nombreBaseDatos", "usuario", "password");
+		//Ejemplo: Connection conexion = FactoriaConexiones.conexion("MYSQL", "localhost", "3306", "health4you", "root", "");
+        PreparedStatement preparedStatement = null;
+    	
+        try {
+        	preparedStatement = conexion.prepareStatement(consulta.toString());
+
+        	preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new Exception("FalloGeneral en la actualización de la BD.", e);
+        } finally {
+            OperacionesGenerales.cerrar(preparedStatement);
+            OperacionesGenerales.cerrar(conexion);
+        }
 	}
 }
